@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>正修科大進修學制報名資格查詢平台</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft JhengHei', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.95;
+        }
+
+        .form-container {
+            padding: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .dynamic-field {
+            display: none;
+            margin-bottom: 25px;
+        }
+
+        .dynamic-field.show {
+            display: block;
+        }
+
+        .check-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .check-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .check-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .result {
+            display: none;
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 12px;
+        }
+
+        .result.show {
+            display: block;
+        }
+
+        .result.success {
+            background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+            border: 2px solid #52c234;
+        }
+
+        .result.fail {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border: 2px solid #f39c12;
+        }
+
+        .result h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .result ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .result li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            color: #34495e;
+        }
+
+        .result li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            color: #27ae60;
+        }
+
+        .notice {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            border-radius: 8px;
+        }
+
+        .notice h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .registration-process {
+            margin-top: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 12px;
+        }
+
+        .registration-process h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        .registration-process ol {
+            padding-left: 20px;
+            line-height: 1.8;
+        }
+
+        .registration-process li {
+            margin-bottom: 15px;
+            color: #34495e;
+        }
+
+        .registration-process .sub-info {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-top: 5px;
+            line-height: 1.6;
+        }
+
+        .registration-process a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .registration-process a:hover {
+            text-decoration: underline;
+        }
+    </style>
+
+<style id="embed-override">
+  html,body{min-height:auto!important;height:auto!important;background:transparent!important;}
+  body{padding:0!important;margin:0!important;}
+  .container{max-width:none!important;margin:0!important;box-shadow:none!important;border-radius:0!important;}
+  .header{border-radius:0!important;}
+  .form-container{padding:20px 18px!important;}
+</style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>正修科大進修學制報名資格查詢平台</h1>
+            <p>輸入您的個人資訊，了解您的報考資格。</p>
+        </div>
+
+        <div class="form-container">
+            <div class="form-group">
+                <label for="age">請問您年滿幾歲？</label>
+                <input type="number" id="age" min="15" max="100" placeholder="請輸入年齡">
+            </div>
+
+            <div class="form-group">
+                <label for="education">請選擇您的學歷(力)類別：</label>
+                <select id="education">
+                    <option value="">請選擇</option>
+                    <option value="高中職">高/中職</option>
+                    <option value="二專">二專</option>
+                    <option value="三專">三專</option>
+                    <option value="五專">五專</option>
+                    <option value="大學">大學</option>
+                    <option value="無學歷">無正式學歷(力)</option>
+                    <option value="其他學力">其他學力</option>
+                </select>
+            </div>
+
+            <div class="dynamic-field" id="educationDetails">
+                <label for="educationStatus">學歷詳細狀況：</label>
+                <select id="educationStatus">
+                    <option value="">請選擇</option>
+                </select>
+            </div>
+
+            <div class="dynamic-field" id="yearsField">
+                <label id="yearsLabel">休學/退學已滿幾年？</label>
+                <input type="number" id="years" min="0" max="50" placeholder="請輸入年數">
+            </div>
+
+            <div class="dynamic-field" id="workField">
+                <label>畢業後相關領域工作年數：</label>
+                <input type="number" id="workYears" min="0" max="50" placeholder="請輸入工作年數">
+            </div>
+
+            <div class="dynamic-field" id="certificateField">
+                <label>全國技術士證照：</label>
+                <select id="certificate">
+                    <option value="">無</option>
+                    <option value="甲級">甲級</option>
+                    <option value="乙級">乙級</option>
+                    <option value="丙級">丙級</option>
+                </select>
+            </div>
+
+            <div class="dynamic-field" id="certWorkField">
+                <label>取得證照後相關領域工作年數：</label>
+                <input type="number" id="certWorkYears" min="0" max="50" placeholder="請輸入工作年數">
+            </div>
+
+            <div class="dynamic-field" id="creditsField">
+                <label>取得學分數：</label>
+                <select id="credits">
+                    <option value="">請選擇</option>
+                    <option value="40專科">40個(或以上)專科以上學分</option>
+                    <option value="80專科">80個(或以上)專科以上學分</option>
+                    <option value="150高中職">150個(或以上)高中職以上學分</option>
+                    <option value="空大40">空中大學選修生40個(或以上)學分</option>
+                    <option value="空大80">空中大學選修生80個(或以上)學分</option>
+                </select>
+            </div>
+
+            <button class="check-btn" id="checkBtn">查詢報考資格</button>
+
+            <div class="result" id="result"></div>
+
+            <div class="notice">
+                <h4>注意事項：</h4>
+                <p>注意事項：最終資格審定依入學大學同等學力認定標準為準</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 學歷選項資料
+        const educationOptions = {
+            '高中職': [
+                '高職畢業',
+                '高職應屆畢業生(學生證6個註冊章)',
+                '高中職業類科畢業',
+                '高中普通科畢業',
+                '高中普通科應屆畢業生(學生證6個註冊章)',
+                '修畢高中職2年級下學期課程',
+                '修畢高中職3年級上學期課程',
+                '修畢高職3年級下學期課程',
+                '修畢高中職業類科3年級下學期課程',
+                '修畢高中普通科3年級下學期課程'
+            ],
+            '二專': [
+                '畢業',
+                '修畢2年級上學期課程',
+                '2年級下學期期間休學',
+                '修滿4個學期並取得80個(或以上)學分'
+            ],
+            '三專': [
+                '畢業',
+                '修畢2年級下學期課程',
+                '修畢3年級上學期課程',
+                '3年級下學期期間休學'
+            ],
+            '五專': [
+                '畢業',
+                '修畢3年級下學期課程',
+                '4年級期間休學',
+                '5年級期間休學',
+                '修畢4年級下學期課程',
+                '修畢5年級上學期課程',
+                '5年級下學期期間休學',
+                '修滿10個學期並取得220個學分'
+            ],
+            '大學': [
+                '修畢2年級下學期(或以上)課程'
+            ]
+        };
+
+        // 隱藏所有動態欄位
+        function hideAllDynamicFields() {
+            const fields = ['educationDetails', 'yearsField', 'workField', 
+                          'certificateField', 'certWorkField', 'creditsField'];
+            fields.forEach(field => {
+                document.getElementById(field).classList.remove('show');
+            });
+        }
+
+        // 更新學歷詳細選項
+        function updateEducationDetails() {
+            const education = document.getElementById('education').value;
+            const detailsDiv = document.getElementById('educationDetails');
+            const statusSelect = document.getElementById('educationStatus');
+            
+            hideAllDynamicFields();
+            
+            if (education === '') {
+                return;
+            }
+            
+            if (education === '無學歷') {
+                document.getElementById('certificateField').classList.add('show');
+                return;
+            }
+            
+            if (education === '其他學力') {
+                document.getElementById('certificateField').classList.add('show');
+                document.getElementById('creditsField').classList.add('show');
+                return;
+            }
+            
+            // 顯示學歷詳細選項
+            detailsDiv.classList.add('show');
+            statusSelect.innerHTML = '<option value="">請選擇</option>';
+            
+            if (educationOptions[education]) {
+                educationOptions[education].forEach(option => {
+                    const opt = document.createElement('option');
+                    opt.value = option;
+                    opt.textContent = option;
+                    statusSelect.appendChild(opt);
+                });
+            }
+        }
+
+        // 更新額外欄位顯示
+        function updateAdditionalFields() {
+            const education = document.getElementById('education').value;
+            const status = document.getElementById('educationStatus').value;
+            
+            // 先隱藏年數和工作欄位
+            document.getElementById('yearsField').classList.remove('show');
+            document.getElementById('workField').classList.remove('show');
+            
+            if (!status) return;
+            
+            // 根據選擇顯示相應欄位
+            if (education === '高中職') {
+                if (status.includes('修畢') && status.includes('2年級下學期')) {
+                    document.getElementById('yearsField').classList.add('show');
+                    document.getElementById('yearsLabel').textContent = '休學或退學已滿幾年？';
+                } else if (status.includes('修畢') && status.includes('3年級上學期')) {
+                    document.getElementById('yearsField').classList.add('show');
+                    document.getElementById('yearsLabel').textContent = '休學或退學已滿幾年？';
+                } else if (status === '高中普通科畢業') {
+                    document.getElementById('yearsField').classList.add('show');
+                    document.getElementById('yearsLabel').textContent = '畢業已滿幾年？';
+                    document.getElementById('workField').classList.add('show');
+                } else if (status === '修畢高中普通科3年級下學期課程') {
+                    document.getElementById('yearsField').classList.add('show');
+                    document.getElementById('yearsLabel').textContent = '修畢課程後已滿幾年？';
+                } else if (status === '高職畢業' || status === '高中職業類科畢業') {
+                    document.getElementById('workField').classList.add('show');
+                }
+            } else if (education === '二專') {
+                if (status === '修畢2年級上學期課程') {
+                    document.getElementById('yearsField').classList.add('show');
+                    document.getElementById('yearsLabel').textContent = '休學或退學已滿幾年？';
+                } else if (status === '2年級下學期期間休學') {
+                    document.getElementById('yearsField').classList.add('show');
+                    document.getElementById('yearsLabel').textContent = '休學已滿幾年？';
+                }
+            } else if (education === '三專') {
+                if (status === '修畢2年級下學期課程') {
+                    document.getElementById('yearsField').classList.add('show');
+                    document.getElementById('yearsLabel').textContent = '休學或退學已滿幾年？';
+                } else if (status === '修畢3年級上學期課程') {
+                    document.getElementById('yearsField').classList.add('show');
+                    document.getElementById('yearsLabel').textContent = '休學或退學已滿幾年？';
+                } else if (status === '3年級下學期期間休學') {
+                    document.getElementById('yearsField').classList.add('show');
+                    document.getElementById('yearsLabel').textContent = '休學已滿幾年？';
+                }
+            } else if (education === '五專') {
+                if (status === '修畢3年級下學期課程') {
+                    document.getElementById('yearsField').classList.add('show');
+                    document.getElementById('yearsLabel').textContent = '休學或退學已滿幾年？';
+                } else if (status === '修畢4年級下學期課程') {
+                    document.getElementById('yearsField').classList.add('show');
+                    document.getElementById('yearsLabel').textContent = '休學或退學已滿幾年？';
+                } else if (status === '修畢5年級上學期課程') {
+                    document.getElementById('yearsField').classList.add('show');
+                    document.getElementById('yearsLabel').textContent = '休學或退學已滿幾年？';
+                } else if (status === '5年級下學期期間休學') {
+                    document.getElementById('yearsField').classList.add('show');
+                    document.getElementById('yearsLabel').textContent = '休學已滿幾年？';
+                }
+            }
+        }
+
+        // 更新證照工作年數欄位
+        function updateCertificateWork() {
+            const certificate = document.getElementById('certificate').value;
+            if (certificate && certificate !== '') {
+                document.getElementById('certWorkField').classList.add('show');
+            } else {
+                document.getElementById('certWorkField').classList.remove('show');
+            }
+        }
+
+        // 檢查報考資格
+        function checkQualification() {
+            const age = parseInt(document.getElementById('age').value);
+            const education = document.getElementById('education').value;
+            const status = document.getElementById('educationStatus').value;
+            const years = parseInt(document.getElementById('years').value) || 0;
+            const workYears = parseInt(document.getElementById('workYears').value) || 0;
+            const certificate = document.getElementById('certificate').value;
+            const certWorkYears = parseInt(document.getElementById('certWorkYears').value) || 0;
+            const credits = document.getElementById('credits').value;
+            
+            const resultDiv = document.getElementById('result');
+            
+            if (!age || !education) {
+                alert('請填寫年齡和學歷類別');
+                return;
+            }
+            
+            let qualified四技 = false;
+            let qualified二專 = false;
+            let qualified二技 = false;
+            let reasons = [];
+            
+            // 檢查四技資格
+            if (education === '高中職') {
+                if (status === '高職畢業' || status === '高中職業類科畢業') {
+                    qualified四技 = true;
+                    qualified二專 = true;
+                    reasons.push('高職/高中職業類科畢業');
+                } else if (status === '高中普通科畢業') {
+                    qualified四技 = true;
+                    reasons.push('高中普通科畢業(符合四技資格)');
+                    // 高中普通科畢業滿1年才能報二專
+                    if (years >= 1) {
+                        qualified二專 = true;
+                        reasons.push('高中普通科畢業已滿1年(符合二專資格)');
+                    }
+                } else if (status === '修畢高中普通科3年級下學期課程') {
+                    qualified四技 = true;
+                    reasons.push('修畢高中普通科3年級下學期課程(符合四技資格)');
+                    // 修畢高中普通科3年級下學期滿1年才能報二專
+                    if (years >= 1) {
+                        qualified二專 = true;
+                        reasons.push('修畢高中普通科3年級下學期課程已滿1年(符合二專資格)');
+                    }
+                } else if (status.includes('應屆畢業生')) {
+                    qualified四技 = true;
+                    reasons.push('應屆畢業生(學生證6個註冊章)');
+                    if (status.includes('高職')) {
+                        qualified二專 = true;
+                    }
+                    // 高中普通科應屆畢業生只能報四技，不能報二專
+                } else if (status.includes('修畢') && status.includes('2年級下學期') && years >= 2) {
+                    qualified四技 = true;
+                    qualified二專 = true;
+                    reasons.push('修畢2年級下學期課程且休/退學滿2年');
+                } else if (status.includes('修畢') && status.includes('3年級上學期') && years >= 1) {
+                    qualified四技 = true;
+                    qualified二專 = true;
+                    reasons.push('修畢3年級上學期課程且休/退學滿1年');
+                } else if (status === '修畢高職3年級下學期課程' || status === '修畢高中職業類科3年級下學期課程') {
+                    qualified四技 = true;
+                    qualified二專 = true;
+                    reasons.push('修畢3年級下學期課程');
+                }
+            }
+            
+            // 檢查五專資格
+            if (education === '五專') {
+                if (status === '畢業') {
+                    qualified二技 = true;
+                    qualified四技 = true;
+                    qualified二專 = true;
+                    reasons.push('五專畢業(符合二技資格，同時符合四技、二專)');
+                } else if (status === '修畢3年級下學期課程' && years >= 1) {
+                    qualified四技 = true;
+                    qualified二專 = true;
+                    reasons.push('修畢五專3年級下學期課程且休/退學滿1年');
+                } else if (status === '4年級期間休學' || status === '5年級期間休學') {
+                    qualified四技 = true;
+                    qualified二專 = true;
+                    reasons.push('五專4/5年級期間休學或退學');
+                } else if (status === '修畢4年級下學期課程') {
+                    if (years >= 3) {
+                        qualified二技 = true;
+                        qualified四技 = true;
+                        qualified二專 = true;
+                        reasons.push('修畢五專4年級下學期課程且休/退學滿3年(符合二技資格)');
+                    } else {
+                        qualified四技 = true;
+                        qualified二專 = true;
+                        reasons.push('修畢五專4年級下學期課程');
+                    }
+                } else if (status === '修畢5年級上學期課程') {
+                    if (years >= 2) {
+                        qualified二技 = true;
+                        qualified四技 = true;
+                        qualified二專 = true;
+                        reasons.push('修畢五專5年級上學期課程且休/退學滿2年(符合二技資格)');
+                    } else {
+                        qualified四技 = true;
+                        qualified二專 = true;
+                        reasons.push('修畢五專5年級上學期課程');
+                    }
+                } else if (status === '5年級下學期期間休學') {
+                    if (years >= 1) {
+                        qualified二技 = true;
+                        qualified四技 = true;
+                        qualified二專 = true;
+                        reasons.push('五專5年級下學期期間休/退學滿1年(符合二技資格)');
+                    } else {
+                        qualified四技 = true;
+                        qualified二專 = true;
+                        reasons.push('五專5年級下學期期間休學');
+                    }
+                } else if (status === '修滿10個學期並取得220個學分') {
+                    qualified二技 = true;
+                    qualified四技 = true;
+                    qualified二專 = true;
+                    reasons.push('五專修滿10個學期並取得220個學分(符合二技資格)');
+                }
+            }
+            
+            // 檢查二專、三專資格
+            if (education === '二專') {
+                if (status === '畢業') {
+                    qualified二技 = true;
+                    qualified四技 = true;
+                    qualified二專 = true;
+                    reasons.push('二專畢業(符合二技資格，同時符合四技、二專)');
+                } else if (status === '修畢2年級上學期課程' && years >= 2) {
+                    qualified二技 = true;
+                    qualified四技 = true;
+                    qualified二專 = true;
+                    reasons.push('修畢二專2年級上學期課程且休/退學滿2年(符合二技資格)');
+                } else if (status === '2年級下學期期間休學' && years >= 1) {
+                    qualified二技 = true;
+                    qualified四技 = true;
+                    qualified二專 = true;
+                    reasons.push('二專2年級下學期期間休學滿1年(符合二技資格)');
+                } else if (status === '修滿4個學期並取得80個(或以上)學分') {
+                    qualified二技 = true;
+                    qualified四技 = true;
+                    qualified二專 = true;
+                    reasons.push('二專修滿4個學期並取得80個學分(符合二技資格)');
+                }
+            }
+            
+            if (education === '三專') {
+                if (status === '畢業') {
+                    qualified二技 = true;
+                    qualified四技 = true;
+                    qualified二專 = true;
+                    reasons.push('三專畢業(符合二技資格，同時符合四技、二專)');
+                } else if (status === '修畢2年級下學期課程' && years >= 3) {
+                    qualified二技 = true;
+                    qualified四技 = true;
+                    qualified二專 = true;
+                    reasons.push('修畢三專2年級下學期課程且休/退學滿3年(符合二技資格)');
+                } else if (status === '修畢3年級上學期課程' && years >= 2) {
+                    qualified二技 = true;
+                    qualified四技 = true;
+                    qualified二專 = true;
+                    reasons.push('修畢三專3年級上學期課程且休/退學滿2年(符合二技資格)');
+                } else if (status === '3年級下學期期間休學' && years >= 1) {
+                    qualified二技 = true;
+                    qualified四技 = true;
+                    qualified二專 = true;
+                    reasons.push('三專3年級下學期期間休學滿1年(符合二技資格)');
+                }
+            }
+            
+            // 檢查大學資格
+            if (education === '大學') {
+                if (status && status.includes('修畢2年級下學期')) {
+                    qualified二技 = true;
+                    qualified四技 = true;
+                    qualified二專 = true;
+                    reasons.push('修畢大學2年級下學期課程(符合二技資格，同時符合四技、二專)');
+                }
+            }
+            
+            // 檢查工作經驗（二技資格）
+            if (education === '高中職' && workYears >= 5) {
+                if (status === '高職畢業' || status === '高中職業類科畢業') {
+                    qualified二技 = true;
+                    if (!qualified四技) qualified四技 = true;
+                    if (!qualified二專) qualified二專 = true;
+                    reasons.push('高職/高中職業類科畢業且相關工作滿5年(符合二技資格)');
+                } else if (status === '高中普通科畢業') {
+                    qualified二技 = true;
+                    if (!qualified四技) qualified四技 = true;
+                    if (!qualified二專) qualified二專 = true;
+                    reasons.push('高中普通科畢業且相關工作滿5年(符合二技資格)');
+                }
+            }
+            
+            // 檢查證照資格
+            if (certificate === '甲級') {
+                qualified四技 = true;
+                qualified二專 = true;
+                reasons.push('取得全國技術士甲級證照(符合四技、二專資格)');
+                if (certWorkYears >= 2) {
+                    qualified二技 = true;
+                    reasons.push('甲級證照且相關工作滿2年(符合二技資格)');
+                }
+            } else if (certificate === '乙級') {
+                if (certWorkYears >= 2) {
+                    qualified四技 = true;
+                    qualified二專 = true;
+                    reasons.push('乙級證照且相關工作滿2年(符合四技、二專資格)');
+                }
+                if (certWorkYears >= 4) {
+                    qualified二技 = true;
+                    reasons.push('乙級證照且相關工作滿4年(符合二技資格)');
+                }
+            } else if (certificate === '丙級' && certWorkYears >= 5) {
+                qualified四技 = true;
+                qualified二專 = true;
+                reasons.push('丙級證照且相關工作滿5年(符合四技、二專資格)');
+            }
+            
+            // 檢查年齡與學分
+            if (age >= 22 && credits) {
+                if (credits === '40專科' || credits === '空大40') {
+                    qualified四技 = true;
+                    qualified二專 = true;
+                    reasons.push('年滿22歲且取得40個以上專科學分');
+                } else if (credits === '80專科' || credits === '空大80') {
+                    qualified二技 = true;
+                    qualified四技 = true;
+                    qualified二專 = true;
+                    reasons.push('年滿22歲且取得80個以上專科學分(符合二技資格)');
+                }
+            }
+            
+            if (age >= 18 && credits === '150高中職') {
+                qualified四技 = true;
+                qualified二專 = true;
+                reasons.push('年滿18歲且取得150個以上高中職學分');
+            }
+            
+            // 顯示結果
+            resultDiv.classList.remove('show', 'success', 'fail');
+            
+            if (qualified四技 || qualified二專 || qualified二技) {
+                let qualifiedPrograms = [];
+                if (qualified二技) qualifiedPrograms.push('二技');
+                if (qualified四技) qualifiedPrograms.push('四技');
+                if (qualified二專) qualifiedPrograms.push('二專');
+                
+                resultDiv.className = 'result success show';
+                resultDiv.innerHTML = `
+                    <h3>✅ 資格符合</h3>
+                    <p><strong>您符合報考：${qualifiedPrograms.join('、')}</strong></p>
+                    <p><strong>符合資格原因：</strong></p>
+                    <ul>
+                        ${reasons.map(r => `<li>${r}</li>`).join('')}
+                    </ul>
+                `;
+            } else {
+                resultDiv.className = 'result fail show';
+                resultDiv.innerHTML = `
+                    <h3>⚠️ 資格待確認</h3>
+                    <p>您的學歷(力)資格不在選項中，請參考報名簡章或電洽本校，由專員為您確認</p>
+                `;
+            }
+            
+            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // 事件監聽器
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('education').addEventListener('change', updateEducationDetails);
+            document.getElementById('educationStatus').addEventListener('change', updateAdditionalFields);
+            document.getElementById('certificate').addEventListener('change', updateCertificateWork);
+            document.getElementById('checkBtn').addEventListener('click', checkQualification);
+        });
+    </script>
+
+<script>
+(function(){
+  var last=0;
+  function measure(){ var c=document.querySelector('.container'); if(c){ return Math.ceil(c.getBoundingClientRect().height + 24); } return document.body.scrollHeight; }
+  function send(){ var h=measure(); if(Math.abs(h-last)>3){ last=h; try{ parent.postMessage({csuEligHeight:h}, '*'); }catch(e){} } }
+  window.addEventListener('load', function(){ send(); setTimeout(send,150); setTimeout(send,500); });
+  document.addEventListener('click', function(){ setTimeout(send,80); setTimeout(send,320); });
+  document.addEventListener('change', function(){ setTimeout(send,80); setTimeout(send,320); });
+  if(window.ResizeObserver){ try{ new ResizeObserver(send).observe(document.querySelector('.container')||document.body); }catch(e){} }
+})();
+</script>
+</body>
+</html>
